@@ -1,2 +1,2 @@
 # JongManBook
-jongmanbook - the algorithms book study
+jongmanbook - the algorithms study
