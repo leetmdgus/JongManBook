@@ -34,8 +34,8 @@ int main(void) {
     cin >> t;
 
     while(t--) {
-        for(int i = 0; i<n; i++) {
-            for(int j = 0;j <n; j++) {
+        for(int i = 0; i<10; i++) {
+            for(int j = 0;j <10; j++) {
                 areFriends[i][j] = false;
             }
         }
