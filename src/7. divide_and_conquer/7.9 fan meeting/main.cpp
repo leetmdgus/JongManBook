@@ -3,19 +3,23 @@
 #include <cmath>
 
 using namespace std;
+vector<int> multiply(const vector<int>&a, const vector<int> &b);
+int hugs(const string& members, const string &fans);
 
-void normalize(vector<int> &num);
-vector<int> multiply(const vector<int> &a, const vector<int> &b);
 
 void addTo(vector<int>& a, const vector<int>& b, int k) {
-    
+    a.resize(max(a.size(), b.size()+k)+1);
+
+    for(int i = 0;i<b.size(); i++) {
+        a[i+k] += b[i];
+    }
+
 }
 
 void subFrom(vector<int>& a, const vector<int> &b) {
     for(int i = 0; i<b.size(); i++) {
         a[i] -= b[i];
     }
-    normalize(a);
 }
 
 vector<int> karatsuba(const vector<int>& a, const vector<int>& b) {
@@ -49,45 +53,30 @@ vector<int> karatsuba(const vector<int>& a, const vector<int>& b) {
 
 
 int main(void) {
-    vector<int> v1;
-    vector<int> v2;
-
-    string a, b;
-    cin >> a >> b;
-    
-    for(int i = 0; i<a.length(); i++) {
-        int num = a[a.length() -i-1] - '0';
-        v1.push_back(num);
+    int t;
+    cin >> t;
+    while(t--) {
+        string members, fans;
+        cin >> members >> fans;
+        cout << hugs(members, fans) << endl;
     }
-    for(int i = 0; i<b.length() ; i++) {
-        int num = b[b.length() -i -1] - '0';
-        v2.push_back(num);
-    }
-
-    vector<int> v3 = karatsuba(v1, v2);
-
-    for(int i = 0;i<v3.size(); i++) {
-        cout << v3[v3.size()-i-1];
-    }
-
     return 0; 
 }
 
-void normalize(vector<int> &num) {
-    num.push_back(0);
+int hugs(const string &members, const string &fans) {
+    int N = members.size(), M = fans.size();
+    vector<int> A(N), B(M);
 
-    for(int i = 0; i+1<num.size(); i++) {
-        if(num[i] < 0) {
-            int borrow = (abs(num[i]) + 9) / 10;
-            num[i+1] -= borrow;
-            num[i] += borrow * 10;
-        } else {
-            num[i+1] += num[i] / 10;
-            num[i] %= 10;
-        }
+    for(int i = 0; i<N; i++) A[i] = (members[i] == 'M');
+    for(int i = 0;i <M; i++) B[M-i-1] = (fans[i] == 'M');
+
+    vector<int> C = karatsuba(A, B);
+    int allhugs = 0; 
+    for(int i = N-1; i<M; i++) {
+        if(C[i] == 0) allhugs++;
     }
 
-    while(num.size() > 1 && num.back() == 0) num.pop_back();
+    return allhugs;
 }
 
 vector<int> multiply(const vector<int> &a, const vector<int> &b) {
@@ -99,7 +88,6 @@ vector<int> multiply(const vector<int> &a, const vector<int> &b) {
         }
     }
 
-    normalize(c);
     return c;
 }
 
